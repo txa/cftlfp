@@ -277,8 +277,19 @@ f \circ g = f \circ h
 & \implies & g & = h 
 \end{align*}
 \begin{exercise}
-  Explicitly prove the dual construction: if $f : A \to B$ has a left inverse $r : B \to A$ with $f \circ r = \id$ then it is an epi.
+  Explicitly prove the dual construction: if $f:A \to B$ has a left inverse $r:B \to A$ with $f \circ r = \id$ then it is an epi.
 \end{exercise}
+\begin{answer}
+  Given $f \circ r = \id$. To show $f : A \to B$ is an epimorphism, pick up arbitrary $g,h: A \to B$ such that $g \circ f = h \circ f$, we need to show $g = h$
+  \begin{align*}
+    g \circ f = h \circ f
+    & \implies & (g \circ f) \circ r = (h \circ f) \circ r \\
+    & \implies & g \circ (f \circ r) = h \circ (f \circ r) \\
+    & \implies & g \circ \id = h \circ \id \\
+    & \implies & g = h
+  \end{align*}
+\end{answer}
+
 Since $\half \circ \double = \id$ we can conclude that $\double$ is a mono (because it has a left inverse) and $\half$ is an epi (because it has a right inverse). On the other hand $\swap$ is self inverse that is $\swap \circ \swap = \id$ hence it has both a left and a right inverse (itself) and hence it is both a mono and an epi. 
  Indeed it is isomorphism and from the above it is easy to see that isomorphisms are always monos and epis. 
 
@@ -289,14 +300,68 @@ In $\cat{\Set}$ the inverse direction is also true:
 \[(\forall x:A.\exists! y:B .R\,x\,y) \to \exists f :A \to B . \forall x:A.R\,x\,(f\,x) \]
 where $\exists!$ means there exists unique, i.e. $\exists! x:A.\phi\,x = \exists x:A.\phi\,x \wedge \forall y:A.\phi\,y \to x=y$. This principle is provable from univalence in Homotopy Type Theory.} 
 \end{exercise}
+\begin{answer}
+  Take arbitrary $f:A \to B$ in $\cat{\Set}$ that is both epi and mono, we want to show $f$ is iso.
+  First we use the fact that epi in $\cat{\Set}$ implies surjective function, that is $\forall y:B. \exists x:A. f\,x = y$.
+  We say $f$ is mono (or injective) that is $\forall x,y:B. f\,x = f\,y \to x = y$.
+  Combine them together, we get $\forall y:B. \exists! x:A. f\,x = y$.
+  Using the principle of unique choice, it implies $\exists! g:A \to B. \forall y:B. f\,(g\,y) = y$.
+  For the other direction, we want to show $\forall x:B.g\,(f\,x) = x$:
+  \begin{align*}
+    id\,(f\,x) = f\,x
+    & \implies & f\,(g\,(f\,x)) = f\,x \\
+    & \implies (Injectivity) & g\,(f\,x) = x
+  \end{align*}
+  Therefore mono and epi implies iso in $\cat{Set}$.
+\end{answer}
+
 However, this is not true in general: consider the embedding $i : \Nat \to \Int$, this is a monoid morphism $i : \cat{Mon}((\Nat,\_+\_,0),(\Int,\_+\_,0))$. 
+
 \begin{exercise}
   Show that $i$ is both an epi and a mono. But it cannot be an iso. Why?
 \end{exercise}
+\begin{answer}
+  First we construct embedding $i$ as: $i(n,0,+) = n,0,+$
+  To prove $i$ is mono:
+  \[ \begin{tikzcd}[column sep=large] \bf{(M,e,+)} \arrow[shift left=2]{r}{f} \arrow[swap,shift right=2]{r}{g} & \Nat \arrow{r}{i} & \Int \end{tikzcd} \]
+  It is trivial to see, as mono in $\cat{Set}$ implies mono in $\cat{Mon}$.
+
+  The epi part:
+  \[ \begin{tikzcd}[column sep=large] \Nat \arrow{r}{i} & \Int \arrow[shift left=2]{r}{f} \arrow[swap,shift right=2]{r}{g} & \bf{(M,e,+)} \end{tikzcd} \]
+  Assume $\forall n:\Int. f\,(i\,n) = g\,(i\,n)$, we need to prove $\forall n:\Int. f\,n = g\,n$
+  If $n \in \Nat$ and we know $i$ is embedding ($i\,n = n$):
+  \begin{align*}
+    f\,(i\,n) = g\,(i\,n)
+    & \implies & f\,n = g\,n
+  \end{align*}
+  If $n$ is negative, we observe f,g preserve composition:
+  \begin{align*}
+    f(0) = f(n+(-n)) = f(n) + f(-n) \\
+    & g(0) = g(n+(-n)) = g(n) + g(-n)
+  \end{align*}
+  Therefore $\forall n:\Int. f\,n = g\,n$
+
+  It is trivial to see $i$ is not iso, because when definint the inverse of $i$, there's no definition for negative part.
+\end{answer}
+
 However, if we know that the function is a mono and an epi because of inverses (we say it is a split mono and a split epi) that it is always an isomorphism:
+
 \begin{exercise}
   Show that in any category a function that has both an left and a right inverse is always an isomorphism.
 \end{exercise}
+\begin{answer}
+  We say a morphism $f: \homC{C}{A}{B}$ has left inverse and right inverse, that is there exist $l,r: \homC{C}{B}{A}$ such that $l \circ f = \id$ and $f \circ r = \id$.
+  To prove f is an isomorphism, we take l as the inverse. We already have $l \circ f = \id$, then we need to prove $f \circ l = \id$. But we can prove:
+  \begin{align*}
+    l
+    &= l \circ \id \\
+    &= l \circ (f \circ r) \\
+    &= (l \circ f) \circ r \\
+    &= \id \circ r \\
+    &= r
+  \end{align*}
+  Therefore we get $f \circ l = \id$ by replacing r with l.
+\end{answer}
 
 
 % \section{Lambda terms and substitutions}
