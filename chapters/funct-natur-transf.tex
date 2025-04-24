@@ -280,21 +280,21 @@ The other direction is a bit more interesting: to show that $\psi \circ \phi = \
   \[\begin{tikzcd}[row sep = large]
     \cat{Mon}(F\,A,M) \arrow[r,"\phi_{A,M}"] \arrow[d,"\lambda h. g\circ h \circ (F\,f)"] & \cat{\Set}(A,U\,M)  \arrow[d,"\lambda k. (U\,g)\circ k \circ f"] \\
     \cat{Mon}(F\,B,N) \arrow[r,"\phi_{B,N}" below]  & \cat{\Set}(B,U\,N)  
-\end{tikzcd}\]
+  \end{tikzcd}\]
 \end{exercise}
 \begin{answer}
   Pick arbitrary $h\colon\homC{Mon}{F\,A}{M}$. Then the down-then-right trip around the square gives
-  \[ \phi\,(g\circ h\circ F(f)) \colon \homC{Set}{A}{U\,N} \]
-  this function sends $a\colon A$ to $g(h(\List\,f\,[a)))$, that is, $g(h\,[f\,a])$ by definition of $\phi$ and $F$.
+  \[ \phi\,(g\circ h\circ F(f)) \colon \homC{Set}{B}{U\,N} \]
+  this function sends $b\colon B$ to $g(h(\List\,f\,[b]))$, that is, $g(h\,[f\,b])$ by definition of $\phi$ and $F$.
   
-  The right-then-down path takes $h$ to $(U\,g)\circ (\phi\,h)\circ f$. Calculating this at $a:A$, we get:
+  The right-then-down path takes $h$ to $(U\,g)\circ (\phi\,h)\circ f$. Calculating this at $b:B$, we get:
   \begin{align*}
-    ((U\,g)\circ (\phi\,h)\circ f)\,a 
-      &= (U\,g)\,(\phi\,h\,(f\,a))\\
-      &= (U\,g)\,(h\,[f\,a])\\
-      &= g(h\,[f\,a]).
+    ((U\,g)\circ (\phi\,h)\circ f)\,b
+      &= (U\,g)\,(\phi\,h\,(f\,b))\\
+      &= (U\,g)\,(h\,[f\,b])\\
+      &= g(h\,[f\,b]).
   \end{align*}
-  This is the same expression we got by the other direction. Since $a$ was arbitrary, conclude
+  This is the same expression we got by the other direction. Since $b$ was arbitrary, conclude
   \[ \phi\,(g\circ h\circ F(f)) = (U\,g)\circ (\phi\,h)\circ f,\]
   which is naturality.
 \end{answer}
@@ -307,11 +307,11 @@ In practice one rarely checks naturality conditions because they follow from the
   What goes wrong if we would have used one of the other functors, e.g. finite multisets or finite sets?
 \end{question}
 
-We abstract from the concrete case and define adjunctions in general: Given functors $L : \cat{C} \to \cat{D}$ and $R : \cat{D} \to \cat{C}$ an adjunction is given by a natural isomorphism (in $A,B$): that is there is a family of isomorphisms 
+We abstract from the concrete case and define adjunctions in general: Given functors $L : \cat{D} \to \cat{C}$ and $R : \cat{C} \to \cat{D}$ an adjunction is given by a natural isomorphism (in $A,B$): that is there is a family of isomorphisms 
 \[\begin{tikzcd}[column sep = large]
 \cat{C}(L\,A,B) \arrow[r,"\phi_{A,B}",bend right,"\cong" above=11] & \cat{D}(A,R\,B) \arrow[l,"\psi_{A,B}",bend right]
 \end{tikzcd}\]
-which is natural in $A,B$,i.e. f or $f:\cat{D}(A,C)$ and $g : \cat{C}(B,D)$ the following diagram commutes
+which is natural in $A,B$,i.e. f or $f:\cat{D}(C,A)$ and $g : \cat{C}(B,D)$ the following diagram commutes
 \[\begin{tikzcd}[row sep = large]
     \cat{C}(L\,A,B) \arrow[r,"\phi_{A,B}"] \arrow[d,"\lambda h. g\circ h \circ (L\,f)"] & \cat{D}(A,R\,B)  \arrow[d,"\lambda k. (R\,g)\circ k \circ f"] \\
     \cat{C}(L\,C,D) \arrow[r,"\phi_{C,D}" below]  & \cat{D}(C,R\,D)  
@@ -349,8 +349,34 @@ R\,B \arrow[rd,equal] \arrow[r,"\eta_{R\,B}"] &   R\,(L\,(R\,B)) \arrow[d,"R\,\e
 \]
 
 \begin{exercise}
- Give explicit definitions of $\eta$ and $\epsilon$ for the adjunction between $\cat{Mon}$ and $\cat{\Set}$ we have defined.
+  Give explicit definitions of $\eta$ and $\epsilon$ for the adjunction between $\cat{Mon}$ and $\cat{\Set}$ we have defined.
 \end{exercise}
+\begin{answer}
+  \begin{align*}
+  \eta : \int_{A:\cat{Set}} \homC{Set}{A}{U\,(F\,A)} \\
+  \eta_A\,a = [a] \\
+  \epsilon : \int_{M:\cat{Mon}} \homC{Mon}{F\,(U\,M)}{M} \\
+  \epsilon_M\,[a_0,a_1,\dots,a_{n-1}]=a_0*a_1*\dots*a_{n-1}
+  \end{align*}
+  \[\begin{tikzcd}
+  F\,A \arrow[rd,equal] \arrow[r,"F\,\eta_{A}"] &   F\,(U\,(F\,A))\arrow[d,"\epsilon_{F\,A}"]\\
+  & F\,A
+  \end{tikzcd}
+  \quad
+  \begin{tikzcd}
+  U\,M \arrow[rd,equal] \arrow[r,"\eta_{U\,M}"] &   U\,(F\,(U\,M)) \arrow[d,"U\,\epsilon_M"]\\
+  & U\,M
+  \end{tikzcd}
+  \]
+  \begin{tikzcd}
+  {[a_0,a_1,\dots,a_{n-1}]} \arrow[rd,equal] \arrow[r,"F\,\eta_{A}", mapsto] & {[[a_0],[a_1],\dots,[a_{n-1}]]} \arrow[d,"\epsilon_{F\,A}",mapsto]\\
+  & {[a_0] ++ [a_1] ++ \dots ++ [a_{n-1}]}
+  \end{tikzcd}
+  \begin{tikzcd}
+  a \arrow[rd,equal] \arrow[r,"\eta_{U\,M}"] & {[a]} \arrow[d,"U\,\epsilon_M"]\\
+  & a * e
+  \end{tikzcd}
+\end{answer}
 
 \begin{exercise}
   Show that the two definitions of an adjunctions between two functors $L : \cat{C} \to \cat{D}$ and $R : \cat{D} \to \cat{C}$ are equivalent: 
@@ -359,12 +385,67 @@ R\,B \arrow[rd,equal] \arrow[r,"\eta_{R\,B}"] &   R\,(L\,(R\,B)) \arrow[d,"R\,\e
     \[ \cat{C}(L\,A,B)  \cong \cat{D}(A,R\,B)  \]
   \item A adjunction is given by two natural transformations: 
     \begin{align*}
-      \eta : \int_{B:\cat{D}} \cat{D}(B,R\,(L\,B))\\
-      \epsilon : \int_{A:\cat{C}} \cat{C}(F\,(G\,B),B) 
+      \eta : \int_{A:\cat{D}} \cat{D}(A,R\,(L\,A))\\
+      \epsilon : \int_{B:\cat{C}} \cat{C}(L\,(R\,B),B)
     \end{align*}
     s.t. $\epsilon_{L\,A} \circ L\,\eta_A = \id_{L\,A}$ and $R\,\epsilon_B \circ \eta_{R\,B} = \id_{R\,B}$.
   \end{itemize}
 \end{exercise}
+\begin{answer}
+  One direction we prove first definition implies the second one:\\
+  We call the pair of natural isomorphisms $\phi_{A,B}\colon \homC{C}{L\,A}{B} \to \homC{D}{A}{R\,B}$ and $\psi_{A,B}\colon \homC{D}{A}{R\,B} \to \homC{C}{L\,A}{B}$
+  Define $\epsilon = \phi \id_{L\,A}$ and $\eta = \psi \id_{R\,B}$
+  Now to check the triangles commute: $\epsilon_{L\,A} \circ L\,\eta_A = \id_{L\,A}$ and $R\,\epsilon_B \circ \eta_{R\,B} = \id_{R\,B}$
+  We will need to prove a lemma, that is forall $k \colon \homC{D}{A}{R\,B}$ and $f\colon \homC{D}{C}{A}$, we have $\psi\,k \circ L\,f = \psi (k \circ f)$
+  It can be proved by the following diagram:
+  \[\begin{tikzcd}[row sep = large]
+    \homC{C}{L\,A}{B} \arrow[r,"\psi_{A,B}"] \arrow[d,"\lambda h. h \circ (L\,f)"] & \homC{D}{A}{R\,B}  \arrow[d,"\lambda k. k \circ f"] \\
+    \homC{C}{L\,C}{B} \arrow[r,"\psi_{B,N}" below]  & \homC{D}{C}{R\,B}
+  \end{tikzcd}\]
+  % TODO: Need to fix the direction of arrows
+  Using this lemma to finish the proof:
+  \begin{align*}
+    \eta_{L\,A} \circ L\,\epsilon_{A}
+      &= \psi\,\id_{R\,(L\,A)} \circ L\,(\phi\,\id_{L\,A}) \\
+      &= \psi (\id_{L\,A} \circ \phi\,\id_{L\,A}) \\
+      &= \psi (\phi\,\id{L\,A}) \\
+      &= (\psi \circ \phi)\,\id_{L\,A} \\
+      &= \id_{L\,A}
+  \end{align*}
+  \begin{align*}
+    R\,\eta_{B} \circ \epsilon_{R\,B}
+      &= R\,(\psi\,\id_{R\,B}) \circ \phi\,\id_{L\,(R\,B)} \\
+      &= \phi (\psi\,\id_{R\,B} \circ \id_{R\,B}) \\
+      &= \phi (\psi\,\id_{R\,B}) \\
+      &= (\phi \circ \psi)\,\id_{R\,B} \\
+      &= \id_{R\,B}
+  \end{align*}
+
+  For the opposite direction: \\
+  Define $\phi_{A,B} f = R\,f \circ \epsilon_{A}$ and $\psi_{A,B} g = \eta_{B} \circ L\,g$
+  The naturality of $\phi$ and $\psi$ follows from the naturality of $\eta$ and $\epsilon$.
+  We still need to (use extensionality) to check they are isomorphic. Take arbitrary $f \colon \homC{C}{L\,A}{B}$:
+  \begin{align*}
+    (\psi \circ \phi) f
+      &= \psi (\phi f) \\
+      &= \eta_{B} \circ L(R\,f \circ \eta_{A}) \\
+      &= \eta_{B} \circ L(R\,f) \circ L\,\eta_{A} \\
+      &= f \circ \eta_{L\,A} \circ L\,\eta_{A} \\
+      &= f \circ id_{L\,A} \\
+      &= f
+  \end{align*}
+  And take arbitrary $g \colon \homC{D}{A}{R\,B}$:
+  \begin{align*}
+    (\phi \circ \psi) g
+      &= \phi (\phi g) \\
+      &= R(\eta_{B} \circ L\,g) \circ \epsilon_{A} \\
+      &= R\,\eta_{B} \circ R\,(L\,g) \circ \epsilon_{A} \\
+      &= R\,\eta_{B} \circ \epsilon_{R\,B} \circ g \\
+      &= id_{R\,B} \circ g \\
+      &= g.
+  \end{align*}
+  Therefore the two definitions are equivalent.
+\end{answer}
 
 \section{The Yoneda lemma}
 \label{sec:yoneda-lemma}
@@ -387,6 +468,20 @@ Let $F$ be a functor $\cat{C}^\op \to \cat{\Set}$ this is called \emph{a preshea
 \begin{exercise}
   Check that $\homC{C}{\_}{A}$ satisfies the functor laws.
 \end{exercise}
+\begin{answer}
+  We check $\homC{C}{\_}{A}$ preserve identity and composition:
+  \begin{align*}
+    \homC{C}{id}{A}\,g 
+      &= g \circ id \\
+      &= g \\
+    \homC{C}{f \circ h}{A}\,g
+      &= g \circ (f \circ h) \\
+      &= (g \circ f) \circ h \\
+      &= (\homC{C}{f}{A}\,g) \circ h \\
+      &= \homC{C}{h}{A} (\homC{C}{f}{A}\,g).
+  \end{align*}
+\end{answer}
+
 Indeed, since we already learnt that functors and natural transformations form a category, preshaves over $\cat{C}$ form a category which we denote as $\PSh\,\cat{C}$. Now using the other input of the homset of $\cat{C}$ we can form a functor $\Y : \cat{C} \to \PSh\,\cat{C}$, called the \emph{Yoneda embedding}, which is defined on objects as $\Y\,A = \homC{C}{\_}{A}$. To define the morphism part assume $f:\homC{C}{A}{B}$:
 \begin{align*}
 & \Y\,f :  \int_{X:\cat{C}}\homC{C}{X}{A} \to \homC{C}{X}{B} \\
@@ -395,6 +490,25 @@ Indeed, since we already learnt that functors and natural transformations form a
 \begin{exercise}
   Check that $Y\,f$ is a natural transformation and that $Y$ satisfies the functor laws.
 \end{exercise}
+\begin{answer}
+  Take arbitrary $f \colon A \to B$ and $g \colon X \to Y$, it is trivial to check the following naturality square commutes:
+  \[\begin{tikzcd}[row sep = large]
+    \homC{C}{X}{A} \arrow[r,"\homC{C}{X}{f}"] \arrow[d,"\homC{C}{g}{A}"] & \homC{C}{X}{B} \arrow[d,"\homC{C}{g}{B}"] \\
+    \homC{C}{Y}{A} \arrow[r,"\homC{C}{Y}{f}" below]  & \homC{C}{Y}{B}
+  \end{tikzcd}\]
+  % TODO: Need to fix the direction of arrows
+  Now check $\Y$ preserve identity and composition:
+  \begin{align*}
+    (\Y\,\id)_X\,g
+      &= \id \circ g \\
+      &= g \\
+    (\Y\,(f \circ h))_X\,g
+      &= (f \circ h) \circ g \\
+      &= f \circ (h \circ g) \\
+      &= f \circ (\Y\,h)_X\,g \\
+      &= (\Y\,f)_X\,((\Y\,h)_X\,g).
+  \end{align*}
+\end{answer}
 Maybe you wondered why presheaves are defined as contravariant functors. The reason is that this way the Yoneda embedding is covariant (otherwise it could be hardly called an embedding).
 
 For any presheaf $F : \cat{C}^\op\to\Set$ we can use its morphism part to define
@@ -406,6 +520,25 @@ as $\phi_X\,x\,f = F\,f\,x$.
 \begin{exercise}
   Check that $\phi$ is natural in $X:\cat{C}$.
 \end{exercise}
+\begin{answer}
+  Take arbitrary $g \colon \homC{C}{Z}{X}$, We need to show this naturality square commutes:
+  \[\begin{tikzcd}[row sep = large]
+    F\,X \arrow[r,"\phi_X"] \arrow[d,"F\,g"] & \int_{Y : \cat{C}} \homC{C}{Y}{X} \to F\,Y \arrow[d,"\lambda \alpha. \lambda k.\alpha(g \circ k)"] \\
+    F\,Z \arrow[r,"\phi_Z" below]  & \int_{Y : \cat{C}} \homC{C}{Y}{Z} \to F\,Y
+  \end{tikzcd}\]
+  By extensionality, take arbitrary $x \colon F\,X$ and $f \colon \homC{C}{Y}{Z}$. Then left-bottom path:
+  \begin{align*}
+    \phi_Z (F\,g\,x) f
+      &= F\,f (F\,g\,x)
+  \end{align*}
+  And the right-top path:
+  \begin{align*}
+    (\lambda \alpha. \lambda k.\alpha(g \circ k)) (\phi_X\,x) f
+      &= \phi_X\,x (g \circ f) \\
+      &= F (g \circ f) x \\
+      &= F\,f (F\,g\,x).
+  \end{align*}
+\end{answer}
 
 Now the Yoneda lemma says that this is a natural isomorphism. It is easy to define the inverse (fixing $X:\cat{C}$):
 \begin{align*}
@@ -488,8 +621,21 @@ We can expand the isomorphism further:
 \end{align*}
 We know that every functor preserves isomorphisms, a functor which is full and faithful also \emph{reflects} them. That is if $Y\,f$ is an isomorphism then $f$ is one. 
 \begin{exercise}
-  Proof that every full and faithful functor reflects isomorphisms. 
+  Prove that every full and faithful functor reflects isomorphisms. 
 \end{exercise}
+\begin{answer}
+  Assume $F \colon \cat{C} \to \cat{D}$ is full and faithful. Take arbitrary $f \colon \homC{C}{X}{Y}$,
+  we need to show if $F\,f$ is isomorphism, then $f$ is isomorphism. By assumptions, there exists an inverse of $F\,f$. Call it: $(F\,f)^{-1} \colon \homC{D}{F\,X}{F\,Y}$.
+  By fullness, we know there exists a morphism $f^{-1} \colon \homC{C}{Y}{X}$ such that:
+  \[ F\,f^{-1} = (F\,f)^{-1} \]
+  By faithfulness, we know:
+  \[ F (f \circ f^{-1}) = F\,f \circ F\,f^{-1} = F\,f \circ (F\,f)^{-1} = \id_{F\,Y} = F \id_{Y}\]
+  \[ F (f^{-1} \circ f) = F\,f^{-1} \circ F\,f = (F\,f)^{-1} \circ F\,f = \id_{F\,X} = F \id_{X}\]
+  Together this implies:
+  \[ f \circ f^{-1} = \id_{Y} \]
+  \[ f^{-1} \circ f = \id_{X} \]
+\end{answer}
+
 This gives rise to a useful corollary: to show that $f : \homC{C}{A}{B}$ is an isomorphism it is enough to show that $\Y\,A$ and $\Y\,B$ are naturally isomorphic, i.e.
 \[ \int_{X:\cat{C}} \homC{C}{A}{X} \cong \homC{C}{B}{X} ,\]
 and this is often easier because we can just calculate with natural isomorphisms.
@@ -520,6 +666,14 @@ $\obj{\cat{C}}$ but it is neither co- nor contravariant. However, it is a profun
 \begin{exercise}
   Fill in the morphism part of $F$.
 \end{exercise}
+\begin{answer}
+  Given $f \colon \homC{C^\op}{B^{-}}{A^{-}}$ and $g \colon \homC{C}{A^{+}}{B^{+}}$, the morsphim part of $F$:
+  \begin{align*}
+    &F (f,g) \colon F(A^{-},A^{+}) \to F(B^{-},B^{+}) \\
+    &F (f,g)\,h = g \circ h \circ f
+  \end{align*}
+\end{answer}
+
 Now given a profunctor $F : \cat{C}^\op\times\cat{C} \to \Set$ we define its end $\int_{X: \cat{C}}F(X,X)$ as a subset of the dependent function type $\alpha:\Pi_{X : \obj{\cat{C}}}F(X,X)$ such the following diagram commutes for any $f : \homC{C}{A}{B}$ in $\cat{Set}$:
 \[\begin{tikzcd}
   & \bf{1} \arrow[dl,"\alpha_A" left=5]\arrow[dr,"\alpha_B"]\\
@@ -529,11 +683,17 @@ Now given a profunctor $F : \cat{C}^\op\times\cat{C} \to \Set$ we define its end
 \]
 That is we define
 \[ \int_{X:\cat{C}} F(X,X) = \{ \alpha : \Pi_{X : \obj{\cat{C}}}F(X,X) \mid
-  \forall {f : \homC{C}{A}{B}} . F(A,f)\,\alpha_A) = F(f,B)\,\alpha_B \}\]
+  \forall {f : \homC{C}{A}{B}} . F(A,f)\,\alpha_A = F(f,B)\,\alpha_B \}\]
 \begin{exercise}
   Show that instantiating the definition of ends given here gives rise to the definition of natural transformations given previously.
   That is $\int_{A : \obj{\cat{C}}} \cat{D}(F\,A,G\,A)$ is the set of natural transformations.
 \end{exercise}
+\begin{answer}
+  We instantiate the definition of ends with $\homC{D}{F\,A}{G\,A}$ and get:
+  \[ \int_{A:\cat{C}} \homC{D}{F\,A}{G\,A} = \{ \alpha : \Pi_{A : \obj{\cat{C}}}\homC{D}{F\,A}{G\,A} \mid
+  \forall {f : \homC{C}{A}{B}} . G\,f \circ \alpha_A  = \alpha_B \circ F\,f \}\]
+  which each exactly corresponds to the dependent function and naturality square.
+\end{answer}
 
 Dually we define coends $\int^{X:\cat{C}} F(X,X)$ as a quotient of a $\Sigma$-type. That is we consider
 $\Sigma_{X : \obj{\cat{C}}}F(X,X) / \sim$ where for any  $z : F(B,A)$ and $f: \homC{C}{A}{B}$ and $z : F(B,A)$ ,
